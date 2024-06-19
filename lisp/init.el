@@ -8,7 +8,7 @@
 ;;
 ;;; Code:
 
-;; (doom-require 'doom-keybinds)
+(doom-require 'doom-keybinds)
 (doom-require 'doom-ui)
 ;; (doom-require 'doom-projects)
 (doom-require 'doom-editor)
