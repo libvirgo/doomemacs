@@ -22,11 +22,11 @@
 
        :completion
        ;; company           ; the ultimate code completion backend
-       ;;(corfu +orderless)  ; complete with cap(f), cape and a flying feather!
+       (corfu +orderless +icons)  ; complete with cap(f), cape and a flying feather!
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;;ivy               ; a search engine for love and life
-       ;; vertico           ; the search engine of the future
+       (vertico +icons)             ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -43,7 +43,7 @@
        ;;nav-flash         ; blink cursor line after big motions
        ;;neotree           ; a project drawer, like NERDTree for vim
        ;; ophints           ; highlight the region an operation acts on
-       ;; (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
@@ -94,8 +94,8 @@
        ;;docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
-       ;; (eval +overlay)     ; run code, run (also, repls)
-       ;; lookup              ; navigate your code and its documentation
+       (eval +overlay)     ; run code, run (also, repls)
+       lookup              ; navigate your code and its documentation
        ;;lsp               ; M-x vscode
        ;; magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
@@ -127,7 +127,7 @@
        ;;dhall
        ;;elixir            ; erlang done right
        ;;elm               ; care for a cup of TEA?
-       ;; emacs-lisp        ; drown in parentheses
+       emacs-lisp        ; drown in parentheses
        ;;erlang            ; an elegant language for a more civilized age
        ;;ess               ; emacs speaks statistics
        ;;factor
@@ -192,5 +192,5 @@
 
        :config
        ;;literate
-       ;; (default +bindings +smartparens))
+       (default +smartparens)
 )

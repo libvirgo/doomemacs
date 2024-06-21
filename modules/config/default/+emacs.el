@@ -1,6 +1,6 @@
 ;;; config/default/+emacs.el -*- lexical-binding: t; -*-
 
-(require 'projectile) ; we need its keybinds immediately
+;; (require 'projectile) ; we need its keybinds immediately
 
 
 ;;

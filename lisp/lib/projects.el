@@ -40,55 +40,55 @@ unless they begin with a slash."
 ;;
 ;;; Commands
 
-;;;###autoload
-(defun doom/find-file-in-other-project (project-root)
-  "Performs `projectile-find-file' in a known project of your choosing."
-  (interactive
-   (list
-    (completing-read "Find file in project: " (projectile-relevant-known-projects))))
-  (unless (file-directory-p project-root)
-    (error "Project directory '%s' doesn't exist" project-root))
-  (doom-project-find-file project-root))
+;; ;;;###autoload
+;; (defun doom/find-file-in-other-project (project-root)
+;;   "Performs `projectile-find-file' in a known project of your choosing."
+;;   (interactive
+;;    (list
+;;     (completing-read "Find file in project: " (projectile-relevant-known-projects))))
+;;   (unless (file-directory-p project-root)
+;;     (error "Project directory '%s' doesn't exist" project-root))
+;;   (doom-project-find-file project-root))
 
-;;;###autoload
-(defun doom/browse-in-other-project (project-root)
-  "Performs `find-file' in a known project of your choosing."
-  (interactive
-   (list
-    (completing-read "Browse in project: " (projectile-relevant-known-projects))))
-  (unless (file-directory-p project-root)
-    (error "Project directory '%s' doesn't exist" project-root))
-  (doom-project-browse project-root))
+;; ;;;###autoload
+;; (defun doom/browse-in-other-project (project-root)
+;;   "Performs `find-file' in a known project of your choosing."
+;;   (interactive
+;;    (list
+;;     (completing-read "Browse in project: " (projectile-relevant-known-projects))))
+;;   (unless (file-directory-p project-root)
+;;     (error "Project directory '%s' doesn't exist" project-root))
+;;   (doom-project-browse project-root))
 
 ;;;###autoload
 (defun doom/browse-in-emacsd ()
   "Browse files from `doom-emacs-dir'."
   (interactive) (doom-project-browse doom-emacs-dir))
 
-;;;###autoload
-(defun doom/find-file-in-emacsd ()
-  "Find a file under `doom-emacs-dir', recursively."
-  (interactive) (doom-project-find-file doom-emacs-dir))
+;; ;;;###autoload
+;; (defun doom/find-file-in-emacsd ()
+;;   "Find a file under `doom-emacs-dir', recursively."
+;;   (interactive) (doom-project-find-file doom-emacs-dir))
 
-;;;###autoload
-(defun doom/add-directory-as-project (dir)
-  "Register an arbitrary directory as a project.
+;; ;;;###autoload
+;; (defun doom/add-directory-as-project (dir)
+;;   "Register an arbitrary directory as a project.
 
-Unlike `projectile-add-known-project', if DIR isn't a valid project, a .project
-file will be created within it so that it will always be treated as one. This
-command will throw an error if a parent of DIR is a valid project (which would
-mask DIR)."
-  (interactive "D")
-  (let ((short-dir (abbreviate-file-name dir)))
-    (unless (file-equal-p (doom-project-root dir) dir)
-      (with-temp-file (doom-path dir ".project")))
-    (let ((proj-dir (doom-project-root dir)))
-      (unless (file-equal-p proj-dir dir)
-        (user-error "Can't add %S as a project, because %S is already a project"
-                    short-dir (abbreviate-file-name proj-dir)))
-      (message "%S was not a project; adding .project file to it"
-               short-dir (abbreviate-file-name proj-dir))
-      (projectile-add-known-project dir))))
+;; Unlike `projectile-add-known-project', if DIR isn't a valid project, a .project
+;; file will be created within it so that it will always be treated as one. This
+;; command will throw an error if a parent of DIR is a valid project (which would
+;; mask DIR)."
+;;   (interactive "D")
+;;   (let ((short-dir (abbreviate-file-name dir)))
+;;     (unless (file-equal-p (doom-project-root dir) dir)
+;;       (with-temp-file (doom-path dir ".project")))
+;;     (let ((proj-dir (doom-project-root dir)))
+;;       (unless (file-equal-p proj-dir dir)
+;;         (user-error "Can't add %S as a project, because %S is already a project"
+;;                     short-dir (abbreviate-file-name proj-dir)))
+;;       (message "%S was not a project; adding .project file to it"
+;;                short-dir (abbreviate-file-name proj-dir))
+;;       (projectile-add-known-project dir))))
 
 
 ;;
@@ -104,10 +104,11 @@ mask DIR)."
 (defun doom-project-root (&optional dir)
   "Return the project root of DIR (defaults to `default-directory').
 Returns nil if not in a project."
-  (let ((projectile-project-root
-         (unless dir (bound-and-true-p projectile-project-root)))
-        projectile-require-project-root)
-    (projectile-project-root dir)))
+  ;; (let ((project-find-root
+  ;;        (unless dir (bound-and-true-p projectile-project-root)))
+  ;;       projectile-require-project-root)
+  (let ((dir (or default-directory)))
+       (cdr (project-find-root dir))))
 
 ;;;###autoload
 (defun doom-project-name (&optional dir)
@@ -116,7 +117,7 @@ Returns nil if not in a project."
 Returns '-' if not in a valid project."
   (if-let (project-root (or (doom-project-root dir)
                             (if dir (expand-file-name dir))))
-      (funcall projectile-project-name-function project-root)
+      (file-name-nondirectory (directory-file-name (cdr project-root)))
     "-"))
 
 ;;;###autoload
@@ -134,14 +135,14 @@ If DIR is not a project, it will be indexed (but not cached)."
   (unless (file-readable-p dir)
     (error "Directory %S isn't readable" dir))
   (let* ((default-directory (file-truename dir))
-         (projectile-project-root (doom-project-root dir))
-         (projectile-enable-caching projectile-enable-caching))
-    (cond ((and projectile-project-root (file-equal-p projectile-project-root default-directory))
+         (project-project-root (doom-project-root dir))
+         (project-enable-caching project-enable-caching))
+    (cond ((and project-project-root (file-equal-p project-project-root default-directory))
            (unless (doom-project-p default-directory)
              ;; Disable caching if this is not a real project; caching
              ;; non-projects easily has the potential to inflate the projectile
              ;; cache beyond reason.
-             (setq projectile-enable-caching nil))
+             (setq project-enable-caching nil))
            (call-interactively
             ;; Intentionally avoid `helm-projectile-find-file', because it runs
             ;; asynchronously, and thus doesn't see the lexical

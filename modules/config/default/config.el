@@ -223,7 +223,7 @@
 
       ;; This keybind allows * to skip over **.
       (map! :map markdown-mode-map
-            :ig "*" (general-predicate-dispatch nil
+            :g "*" (general-predicate-dispatch nil
                       (looking-at-p "\\*\\* *")
                       (cmd! (forward-char 2)))))
 

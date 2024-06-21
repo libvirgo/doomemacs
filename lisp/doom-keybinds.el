@@ -258,13 +258,13 @@ localleader prefix."
 
 (defvar doom-evil-state-alist
   '(
-    ;; (?n . normal)
-    ;; (?v . visual)
-    ;; (?i . insert)
+    (?n . normal)
+    (?v . visual)
+    (?i . insert)
     (?e . emacs)
-    ;; (?o . operator)
-    ;; (?m . motion)
-    ;; (?r . replace)
+    (?o . operator)
+    (?m . motion)
+    (?r . replace)
     (?g . global))
   "A list of cons cells that map a letter to a evil state symbol.")
 
