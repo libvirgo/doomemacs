@@ -6,7 +6,7 @@
 (when (modulep! +pretty)
   ;; UI: make the fringe small enough that the diff bars aren't too domineering,
   ;;   while leaving enough room for other indicators.
-  (if (fboundp 'fringe-mode) (fringe-mode '8))
+  (if (fboundp 'fringe-mode) (fringe-mode '3))
   ;; UI: the gutter looks less cramped with some space between it and  buffer.
   (setq-default fringes-outside-margins t)
 

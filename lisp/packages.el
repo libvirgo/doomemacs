@@ -36,9 +36,10 @@
 (package! ws-butler :pin "e3a38d93e01014cd47bf5af4924459bd145fd7c4")
 
 ;; doom-projects.el
-(package! projectile :pin "0163b335a18af0f077a474d4dc6b36e22b5e3274")
-(package! project :pin "bf4c3cfcfbf3423d79170aa880a1abb332ed942e")
+;; (package! projectile :pin "0163b335a18af0f077a474d4dc6b36e22b5e3274")
+;; (package! project :pin "bf4c3cfcfbf3423d79170aa880a1abb332ed942e")
 
 ;; doom-keybinds.el
 (package! general :pin "826bf2b97a0fb4a34c5eb96ec2b172d682fd548f")
+(package! meow :pin "bc05b048d3582425717d114b837b8fe78d47a753")
 (package! which-key :pin "ed389312170df955aaf10c2e120cc533ed5c509e")

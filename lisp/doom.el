@@ -231,16 +231,7 @@
 
 (define-obsolete-variable-alias 'doom-private-dir 'doom-user-dir "3.0.0")
 (defvar doom-user-dir
-  (expand-file-name
-   (if-let (doomdir (getenv-internal "DOOMDIR"))
-       (file-name-as-directory doomdir)
-     (or (let ((xdgdir
-                (file-name-concat
-                 (or (getenv-internal "XDG_CONFIG_HOME")
-                     "~/.config")
-                 "doom/")))
-           (if (file-directory-p xdgdir) xdgdir))
-         "~/.doom.d/")))
+  (expand-file-name "core/" doom-modules-dir)
   "Where your private configuration is placed.
 
 Defaults to ~/.config/doom, ~/.doom.d or the value of the DOOMDIR envvar;

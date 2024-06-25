@@ -40,19 +40,24 @@ use the minibuffer such as `query-replace'.")
                                     (list (current-local-map)))))
         (setq-local corfu-echo-delay nil)
         (corfu-mode +1))))
+  (map!
+   :map corfu-map
+   "C-SPC" #'corfu-insert-separator
+   "C-s-p" #'corfu-popupinfo-scroll-down
+   "C-s-n" #'corfu-popupinfo-scroll-up)
   :config
   (setq corfu-auto t
-        corfu-auto-delay 0.18
+        corfu-auto-delay 0
         corfu-auto-prefix 2
         global-corfu-modes '((not erc-mode
-                                  circe-mode
-                                  help-mode
-                                  gud-mode
-                                  vterm-mode)
+                              circe-mode
+                              help-mode
+                              gud-mode
+                              vterm-mode)
                              t)
         corfu-cycle t
-        corfu-preselect 'prompt
-        corfu-count 16
+        corfu-preselect 'first
+        corfu-count 10
         corfu-max-width 120
         corfu-on-exact-match nil
         corfu-quit-at-boundary (if (or (modulep! :completion vertico)
@@ -93,11 +98,11 @@ use the minibuffer such as `query-replace'.")
     :around #'ispell-completion-at-point
     (condition-case-unless-debug e
         (apply fn args)
-     ('error
-      (message "Error: %s" (error-message-string e))
-      (message "Auto-disabling `text-mode-ispell-word-completion'")
-      (setq text-mode-ispell-word-completion nil)
-      (remove-hook 'completion-at-point-functions #'ispell-completion-at-point t)))))
+      ('error
+       (message "Error: %s" (error-message-string e))
+       (message "Auto-disabling `text-mode-ispell-word-completion'")
+       (setq text-mode-ispell-word-completion nil)
+       (remove-hook 'completion-at-point-functions #'ispell-completion-at-point t)))))
 
 (use-package! cape
   :defer t

@@ -210,36 +210,6 @@ in."
 
         (print! (start "Checking Doom core for irregularities..."))
         (print-group!
-          ;; Check for oversized problem files in cache that may cause unusual/tremendous
-          ;; delays or freezing. This shouldn't happen often.
-          (dolist (file (list "savehist" "projectile.cache"))
-            (when-let (size (ignore-errors (doom-file-size file doom-cache-dir)))
-              (when (> size 1048576) ; larger than 1mb
-                (warn! "%s is too large (%.02fmb). This may cause freezes or odd startup delays"
-                       file (/ size 1024 1024.0))
-                (explain! "Consider deleting it from your system (manually)"))))
-
-          (unless (ignore-errors (executable-find doom-projectile-fd-binary))
-            (warn! "Couldn't find the `fd' binary; project file searches will be slightly slower"))
-
-          (require 'projectile)
-          (when (projectile-project-root "~")
-            (warn! "Your $HOME is recognized as a project root")
-            (explain! "Emacs will assume $HOME is the root of any project living under $HOME. If this isn't\n"
-                      "desired, you will need to remove \".git\" from `projectile-project-root-files-bottom-up'\n"
-                      "(a variable), e.g.\n\n"
-                      "  (after! projectile\n"
-                      "    (setq projectile-project-root-files-bottom-up\n"
-                      "          (remove \".git\" projectile-project-root-files-bottom-up)))"))
-
-          ;; There should only be one
-          (when (and (file-equal-p doom-user-dir "~/.config/doom")
-                     (file-directory-p "~/.doom.d"))
-            (print! (warn "Both %S and '~/.doom.d' exist on your system")
-                    (path doom-user-dir))
-            (explain! "Doom will only load one of these (~/.config/doom takes precedence). Possessing\n"
-                      "both is rarely intentional; you should one or the other."))
-
           ;; Check for fonts
           (if (not (executable-find "fc-list"))
               (warn! "Warning: unable to detect fonts because fontconfig isn't installed")

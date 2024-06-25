@@ -22,8 +22,6 @@ are open."
       (yes-or-no-p (format "%s" (or prompt "Really quit Emacs?")))
       (ignore (message "Aborted"))))
 
-
-;;
 ;;; Advice
 
 ;;;###autoload

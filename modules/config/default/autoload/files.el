@@ -11,10 +11,6 @@
 (defun +default/browse-templates ()
   "Browse files from `+file-templates-dir'."
   (interactive) (doom-project-browse +file-templates-dir))
-;;;###autoload
-(defun +default/find-in-templates ()
-  "Find a file under `+file-templates-dir', recursively."
-  (interactive) (doom-project-find-file +file-templates-dir))
 
 ;;;###autoload
 (defun +default/browse-notes ()

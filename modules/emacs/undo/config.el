@@ -51,11 +51,13 @@
 (use-package! vundo
   :unless (modulep! +tree)
   :when (> emacs-major-version 27)
-  :defer t
+  ;; :defer t
   :config
   (setq vundo-glyph-alist vundo-unicode-symbols
         vundo-compact-display t)
-  (define-key vundo-mode-map [remap doom/escape] #'vundo-quit))
+  (define-key vundo-mode-map [remap doom/escape] #'vundo-quit)
+  (define-key meow-insert-state-keymap (kbd "M-u") #'vundo))
+
 
 
 (use-package! undo-tree

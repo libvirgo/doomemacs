@@ -114,7 +114,7 @@ Change `$DOOMDIR' with the `--doomdir' option, e.g.
 
     (print! (success "\nFinished! Doom is ready to go!\n"))
     (with-temp-buffer
-      (insert-file-contents (doom-path doom-emacs-dir "templates/QUICKSTART_INTRO"))
+      (insert-file-contents (doom-path doom-user-dir "QUICKSTART_INTRO"))
       (print! "%s" (buffer-string)))))
 
 (provide 'doom-cli-install)

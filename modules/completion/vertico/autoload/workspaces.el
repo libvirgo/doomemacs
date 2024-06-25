@@ -89,5 +89,5 @@ buffer will be opened in the current workspace instead."
 (defun +vertico/embark-open-in-new-workspace (file)
   "Open file in a new workspace."
   (interactive "GFile:")
-  (+workspace/new)
+  (eyebrowse-create-window-config)
   (find-file file))

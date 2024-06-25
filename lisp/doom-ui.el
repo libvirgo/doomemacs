@@ -10,6 +10,10 @@
 
 Set to `nil' to load no theme at all. This variable is changed by
 `load-theme'.")
+(defcustom doom-theme-light nil
+  "Like doom-theme, but for light")
+(defcustom doom-theme-dark nil
+  "Like doom-theme, but for light")
 
 (defcustom doom-font nil
   "The default font to use.

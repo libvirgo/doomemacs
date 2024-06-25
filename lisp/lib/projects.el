@@ -5,9 +5,9 @@
 ;;      that `projectile' is loaded). If a variable is defined with `defvar'
 ;;      while it is lexically bound, you get "Defining as dynamic an already
 ;;      lexical var" errors in Emacs 28+).
-;;;###autoload (defvar projectile-project-root nil)
-;;;###autoload (defvar projectile-enable-caching (not noninteractive))
-;;;###autoload (defvar projectile-require-project-root 'prompt)
+;;;###autoload (defvar project-project-root nil)
+;;;###autoload (defvar project-enable-caching (not noninteractive))
+;;;###autoload (defvar project-require-project-root 'prompt)
 
 ;;;###autodef
 (cl-defun set-project-type! (name &key predicate compile run test configure dir)
@@ -45,7 +45,7 @@ unless they begin with a slash."
   "Performs `projectile-find-file' in a known project of your choosing."
   (interactive
    (list
-    (completing-read "Find file in project: " (projectile-relevant-known-projects))))
+    (completing-read "Find file in project: " (project-known-project-roots))))
   (unless (file-directory-p project-root)
     (error "Project directory '%s' doesn't exist" project-root))
   (doom-project-find-file project-root))
@@ -104,10 +104,11 @@ mask DIR)."
 (defun doom-project-root (&optional dir)
   "Return the project root of DIR (defaults to `default-directory').
 Returns nil if not in a project."
-  (let ((projectile-project-root
-         (unless dir (bound-and-true-p projectile-project-root)))
-        projectile-require-project-root)
-    (projectile-project-root dir)))
+  ;; (let ((project-find-root
+  ;;        (unless dir (bound-and-true-p projectile-project-root)))
+  ;;       projectile-require-project-root)
+  (let ((dir (or default-directory)))
+       (cdr (project-find-root dir))))
 
 ;;;###autoload
 (defun doom-project-name (&optional dir)
@@ -116,13 +117,13 @@ Returns nil if not in a project."
 Returns '-' if not in a valid project."
   (if-let (project-root (or (doom-project-root dir)
                             (if dir (expand-file-name dir))))
-      (funcall projectile-project-name-function project-root)
+      (file-name-nondirectory (directory-file-name project-root))
     "-"))
 
-;;;###autoload
-(defun doom-project-expand (name &optional dir)
-  "Expand NAME to project root."
-  (expand-file-name name (doom-project-root dir)))
+;; ;;;###autoload
+;; (defun doom-project-expand (name &optional dir)
+;;   "Expand NAME to project root."
+;;   (expand-file-name name (doom-project-root dir)))
 
 ;;;###autoload
 (defun doom-project-find-file (dir)
@@ -134,21 +135,20 @@ If DIR is not a project, it will be indexed (but not cached)."
   (unless (file-readable-p dir)
     (error "Directory %S isn't readable" dir))
   (let* ((default-directory (file-truename dir))
-         (projectile-project-root (doom-project-root dir))
-         (projectile-enable-caching projectile-enable-caching))
-    (cond ((and projectile-project-root (file-equal-p projectile-project-root default-directory))
-           (unless (doom-project-p default-directory)
-             ;; Disable caching if this is not a real project; caching
-             ;; non-projects easily has the potential to inflate the projectile
-             ;; cache beyond reason.
-             (setq projectile-enable-caching nil))
+         (project-project-root (doom-project-root dir)))
+    (cond ((and project-project-root (file-equal-p project-project-root default-directory))
+          ;;  (unless (doom-project-p default-directory)
+          ;;    ;; Disable caching if this is not a real project; caching
+          ;;    ;; non-projects easily has the potential to inflate the projectile
+          ;;    ;; cache beyond reason.
+          ;;    (setq project-enable-caching nil))
            (call-interactively
             ;; Intentionally avoid `helm-projectile-find-file', because it runs
             ;; asynchronously, and thus doesn't see the lexical
             ;; `default-directory'
             (if (doom-module-p :completion 'ivy)
                 #'counsel-projectile-find-file
-              #'projectile-find-file)))
+              #'project-find-file)))
           ((and (bound-and-true-p ivy-mode)
                 (fboundp 'counsel-file-jump))
            (call-interactively #'counsel-file-jump))

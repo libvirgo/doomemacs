@@ -11,7 +11,7 @@
 (defvar doom-leader-key "SPC"
   "The leader prefix key for Evil users.")
 
-(defvar doom-leader-alt-key "M-SPC"
+(defvar doom-leader-alt-key "C-c"
   "An alternative leader prefix key, used for Insert and Emacs states, and for
 non-evil users.")
 
@@ -24,7 +24,7 @@ non-evil users.")
 (defvar doom-localleader-key "SPC m"
   "The localleader prefix key, for major-mode specific commands.")
 
-(defvar doom-localleader-alt-key "M-SPC m"
+(defvar doom-localleader-alt-key "C-c l"
   "The localleader prefix key, for major-mode specific commands. Used for Insert
 and Emacs states, and for non-evil users.")
 
@@ -59,18 +59,18 @@ and Emacs states, and for non-evil users.")
 ;;   In the same vein, this keybind adds a [C-i] event, so users can bind to it
 ;;   independently of TAB. Otherwise, it falls back to keys bound to C-i.
 (define-key key-translation-map [?\C-i]
-  (cmd! (if (let ((keys (this-single-command-raw-keys)))
-              (and keys
-                   (not (cl-position 'tab    keys))
-                   (not (cl-position 'kp-tab keys))
-                   (display-graphic-p)
-                   ;; Fall back if no <C-i> keybind can be found, otherwise
-                   ;; we've broken all pre-existing C-i keybinds.
-                   (let ((key
-                          (doom-lookup-key
-                           (vconcat (cl-subseq keys 0 -1) [C-i]))))
-                     (not (or (numberp key) (null key))))))
-            [C-i] [?\C-i])))
+            (cmd! (if (let ((keys (this-single-command-raw-keys)))
+                        (and keys
+                             (not (cl-position 'tab    keys))
+                             (not (cl-position 'kp-tab keys))
+                             (display-graphic-p)
+                             ;; Fall back if no <C-i> keybind can be found, otherwise
+                             ;; we've broken all pre-existing C-i keybinds.
+                             (let ((key
+                                    (doom-lookup-key
+                                     (vconcat (cl-subseq keys 0 -1) [C-i]))))
+                               (not (or (numberp key) (null key))))))
+                      [C-i] [?\C-i])))
 
 
 ;;
@@ -116,6 +116,10 @@ all hooks after it are ignored.")
 
 (global-set-key [remap keyboard-quit] #'doom/escape)
 
+(when window-system
+  (define-key input-decode-map (kbd "C-[") [control-bracketleft])
+  (global-set-key [control-bracketleft] #'doom/escape))
+
 (with-eval-after-load 'eldoc
   (eldoc-add-command 'doom/escape))
 
@@ -148,16 +152,16 @@ all hooks after it are ignored.")
                          def)))
             (unless (eq bdef :ignore)
               (push `(define-key doom-leader-map (general--kbd ,key)
-                       ,bdef)
+                      ,bdef)
                     forms))
             (when-let (desc (cadr (memq :which-key udef)))
               (prependq!
                wkforms `((which-key-add-key-based-replacements
-                           (general--concat t doom-leader-alt-key ,key)
-                           ,desc)
+                          (general--concat t doom-leader-alt-key ,key)
+                          ,desc)
                          (which-key-add-key-based-replacements
-                           (general--concat t doom-leader-key ,key)
-                           ,desc))))))))
+                          (general--concat t doom-leader-key ,key)
+                          ,desc))))))))
     (macroexp-progn
      (append (and wkforms `((after! which-key ,@(nreverse wkforms))))
              (nreverse forms)))))
@@ -223,8 +227,8 @@ localleader prefix."
       (general-override-mode +1))))
 
 
-;;
-;;; Packages
+;; ;;
+;; ;;; Packages
 
 (use-package! which-key
   :hook (doom-first-input . which-key-mode)
@@ -474,6 +478,116 @@ States
   (when (or (bound-and-true-p byte-compile-current-file)
             (not noninteractive))
     (doom--map-process rest)))
+
+(defun meow-setup ()
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow-motion-overwrite-define-key
+   '("j" . meow-next)
+   '("k" . meow-prev)
+   '("<escape>" . ignore))
+  (meow-leader-define-key
+   ;; SPC j/k will run the original command in MOTION state.
+   '("j" . "H-j")
+   '("k" . "H-k")
+   ;; Use SPC (0-9) for digit arguments.
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument)
+   '("/" . meow-keypad-describe-key)
+   '("?" . meow-cheatsheet))
+  (meow-normal-define-key
+   '("0" . meow-expand-0)
+   '("9" . meow-expand-9)
+   '("8" . meow-expand-8)
+   '("7" . meow-expand-7)
+   '("6" . meow-expand-6)
+   '("5" . meow-expand-5)
+   '("4" . meow-expand-4)
+   '("3" . meow-expand-3)
+   '("2" . meow-expand-2)
+   '("1" . meow-expand-1)
+   '("-" . negative-argument)
+   '(";" . meow-reverse)
+   '("," . meow-inner-of-thing)
+   '("." . meow-bounds-of-thing)
+   '("[" . meow-beginning-of-thing)
+   '("]" . meow-end-of-thing)
+   '("a" . meow-append)
+   '("A" . meow-open-below)
+   '("b" . meow-back-word)
+   '("B" . meow-back-symbol)
+   '("c" . meow-change)
+   '("d" . meow-delete)
+   '("D" . meow-backward-delete)
+   '("e" . meow-next-word)
+   '("E" . meow-next-symbol)
+   '("f" . meow-find)
+   '("g" . meow-cancel-selection)
+   '("G" . meow-grab)
+   '("h" . meow-left)
+   '("H" . meow-left-expand)
+   '("i" . meow-insert)
+   '("I" . meow-open-above)
+   '("j" . meow-next)
+   '("J" . meow-next-expand)
+   '("k" . meow-prev)
+   '("K" . meow-prev-expand)
+   '("l" . meow-right)
+   '("L" . meow-right-expand)
+   '("m" . meow-join)
+   '("n" . meow-search)
+   '("o" . meow-block)
+   '("O" . meow-to-block)
+   '("p" . meow-yank)
+   '("q" . meow-quit)
+   '("Q" . meow-goto-line)
+   '("r" . meow-replace)
+   '("R" . meow-swap-grab)
+   '("s" . meow-kill)
+   '("t" . meow-till)
+   '("u" . meow-undo)
+   '("U" . meow-undo-in-selection)
+   '("v" . meow-visit)
+   '("w" . meow-mark-word)
+   '("W" . meow-mark-symbol)
+   '("x" . meow-line)
+   '("X" . meow-goto-line)
+   '("y" . meow-save)
+   '("Y" . meow-sync-grab)
+   '("z" . meow-pop-selection)
+   '("'" . repeat)
+   '("<escape>" . ignore)))
+
+(use-package! meow
+  :init
+  (meow-global-mode 1)
+  :hook
+  (meow-insert-exit . (lambda ()
+                        (when (bound-and-true-p corfu-mode)
+                          (corfu-quit))
+                        (when (bound-and-true-p yas-minor-mode)
+                          (yas-abort-snippet))
+                        ;; (hydra-keyboard-quit)
+                        ))
+  :config
+  (meow-setup)
+  (define-key meow-insert-state-keymap [remap doom/escape] #'meow-insert-exit)
+  ;; (define-key input-decode-map (kbd "C-[") [control-bracketleft])
+  ;; (define-key meow-insert-state-keymap [control-bracketleft] 'meow-insert-exit)
+  (setq meow-replace-state-name-list '(
+                                       (normal . "(^◔ᴥ◔^)")
+                                       (motion . "(=^‥^=)")
+                                       (keypad . "(=´∇`=)")
+                                       (insert . "(^･ｪ･^)")
+                                       (beacon . "<(ΦωΦ)>")))
+  )
 
 (provide 'doom-keybinds)
 ;;; doom-keybinds.el ends here

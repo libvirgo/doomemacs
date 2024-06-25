@@ -48,8 +48,8 @@
                           (time-to-seconds))
                     collect (epg-sub-key-fingerprint subkey))))
        user-mail-address))
-   ;; And suppress prompts if epa-file-encrypt-to has a default value (without
-   ;; overwriting file-local values).
+  ;; And suppress prompts if epa-file-encrypt-to has a default value (without
+  ;; overwriting file-local values).
   (defadvice! +default--dont-prompt-for-keys-a (&rest _)
     :before #'epa-file-write-region
     (unless (local-variable-p 'epa-file-encrypt-to)
@@ -461,38 +461,38 @@ Continues comments if executed from a commented line. Consults
   (map! :when (modulep! :completion corfu)
         :after corfu
         (:map corfu-map
-         [remap corfu-insert-separator] #'+corfu-smart-sep-toggle-escape
-         "C-S-s" #'+corfu-move-to-minibuffer
-         "C-p" #'corfu-previous
-         "C-n" #'corfu-next
-         "S-TAB" #'corfu-previous
-         [backtab] #'corfu-previous
-         "TAB" #'corfu-next
-         [tab] #'corfu-next))
+              [remap corfu-insert-separator] #'+corfu-smart-sep-toggle-escape
+              "C-S-s" #'+corfu-move-to-minibuffer
+              "C-p" #'corfu-previous
+              "C-n" #'corfu-next
+              "S-TAB" #'corfu-previous
+              [backtab] #'corfu-previous
+              "TAB" #'corfu-next
+              [tab] #'corfu-next))
   (let ((cmds-del
          `(menu-item "Reset completion" corfu-reset
            :filter ,(lambda (cmd)
                       (when (and (>= corfu--index 0)
                                  (eq corfu-preview-current 'insert))
                         cmd))))
-         (cmds-ret
-          `(menu-item "Insert completion DWIM" corfu-insert
-             :filter ,(lambda (cmd)
-                        (interactive)
-                        (cond ((null +corfu-want-ret-to-confirm)
-                               (corfu-quit)
-                               nil)
-                              ((eq +corfu-want-ret-to-confirm 'minibuffer)
-                               (funcall-interactively cmd)
-                               nil)
-                              ((and (or (not (minibufferp nil t))
-                                        (eq +corfu-want-ret-to-confirm t))
-                                    (>= corfu--index 0))
-                               cmd)
-                              ((or (not (minibufferp nil t))
-                                   (eq +corfu-want-ret-to-confirm t))
-                               nil)
-                              (t cmd))))))
+        (cmds-ret
+         `(menu-item "Insert completion DWIM" corfu-insert
+           :filter ,(lambda (cmd)
+                      (interactive)
+                      (cond ((null +corfu-want-ret-to-confirm)
+                             (corfu-quit)
+                             nil)
+                            ((eq +corfu-want-ret-to-confirm 'minibuffer)
+                             (funcall-interactively cmd)
+                             nil)
+                            ((and (or (not (minibufferp nil t))
+                                      (eq +corfu-want-ret-to-confirm t))
+                                  (>= corfu--index 0))
+                             cmd)
+                            ((or (not (minibufferp nil t))
+                                 (eq +corfu-want-ret-to-confirm t))
+                             nil)
+                            (t cmd))))))
     (map! :when (modulep! :completion corfu)
           :map corfu-map
           [backspace] cmds-del
@@ -530,10 +530,10 @@ Continues comments if executed from a commented line. Consults
         :gn [C-S-return]    #'+default/newline-above
 
         (:when (featurep :system 'macos)
-         :gn "s-RET"        #'+default/newline-below
-         :gn [s-return]     #'+default/newline-below
-         :gn "S-s-RET"      #'+default/newline-above
-         :gn [S-s-return]   #'+default/newline-above)))
+          :gn "s-RET"        #'+default/newline-below
+          :gn [s-return]     #'+default/newline-below
+          :gn "S-s-RET"      #'+default/newline-above
+          :gn [S-s-return]   #'+default/newline-above)))
 
 
 ;;

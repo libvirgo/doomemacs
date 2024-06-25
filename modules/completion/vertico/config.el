@@ -134,7 +134,8 @@ orderless."
     [remap switch-to-buffer-other-window] #'consult-buffer-other-window
     [remap switch-to-buffer-other-frame]  #'consult-buffer-other-frame
     [remap yank-pop]                      #'consult-yank-pop
-    [remap persp-switch-to-buffer]        #'+vertico/switch-workspace-buffer)
+    ;; [remap persp-switch-to-buffer]        #'+vertico/switch-workspace-buffer
+    )
   :config
   (defadvice! +vertico--consult-recentf-a (&rest _args)
     "`consult-recent-file' needs to have `recentf-mode' on to work correctly.
@@ -210,7 +211,7 @@ orderless."
          "C-x C-j" #'consult-dir-jump-file))
   :config
   ;; DEPRECATED: Remove when Doom core replaces projectile with project.el
-  (setq consult-dir-project-list-function #'consult-dir-projectile-dirs)
+  (setq consult-dir-project-list-function #'consult-dir-project-dirs)
 
   (when (modulep! :tools docker)
     ;; TODO: Replace with `tramp-container--completion-function' when we drop
@@ -270,8 +271,7 @@ orderless."
 (use-package! embark
   :defer t
   :init
-  (setq which-key-use-C-h-commands nil
-        prefix-help-command #'embark-prefix-help-command)
+  (setq prefix-help-command #'embark-prefix-help-command)
   (map! [remap describe-bindings] #'embark-bindings
         "C-;"               #'embark-act  ; to be moved to :config default if accepted
         (:map minibuffer-local-map
@@ -340,10 +340,8 @@ orderless."
             '(doom/describe-active-minor-mode . minor-mode)
             '(flycheck-error-list-set-filter . builtin)
             '(persp-switch-to-buffer . buffer)
-            '(projectile-find-file . project-file)
-            '(projectile-recentf . project-file)
-            '(projectile-switch-to-buffer . buffer)
-            '(projectile-switch-project . project-file)))
+            '(project-find-file . project-file)
+            '(project-switch-project . project-file)))
 
 
 (use-package! wgrep
