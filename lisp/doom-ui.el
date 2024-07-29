@@ -254,7 +254,7 @@ windows, switch to `doom-fallback-buffer'. Otherwise, delegate to original
 ;;; Windows/frames
 
 ;; A simple frame title
-(setq frame-title-format '("%b – Doom Emacs")
+(setq frame-title-format '("Emacs")
       icon-title-format frame-title-format)
 
 ;; Don't resize the frames in steps; it looks weird, especially in tiling window

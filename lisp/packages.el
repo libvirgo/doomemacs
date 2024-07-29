@@ -40,4 +40,4 @@
 
 ;; doom-keybinds.el
 (package! general :pin "826bf2b97a0fb4a34c5eb96ec2b172d682fd548f")
-(package! which-key :pin "38d4308d1143b61e4004b6e7a940686784e51500")
+;; (package! which-key :pin "38d4308d1143b61e4004b6e7a940686784e51500")

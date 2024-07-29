@@ -100,14 +100,14 @@ Change `$DOOMDIR' with the `--doomdir' option, e.g.
     (print! "Regenerating autoloads files")
     (doom-profile-generate)
 
-    (if (eq hooks? :no)
-        (print! (warn "Not deploying commit-msg and pre-push git hooks, as requested"))
-      (print! "Deploying commit-msg and pre-push git hooks")
-      (print-group!
-       (condition-case e
-           (call! `(ci deploy-hooks ,@(if yes? '("--force"))))
-         ('user-error
-          (print! (warn "%s") (error-message-string e))))))
+    ;; (if (eq hooks? :no)
+    ;;     (print! (warn "Not deploying commit-msg and pre-push git hooks, as requested"))
+    ;;   (print! "Deploying commit-msg and pre-push git hooks")
+    ;;   (print-group!
+    ;;    (condition-case e
+    ;;        (call! `(ci deploy-hooks ,@(if yes? '("--force"))))
+    ;;      ('user-error
+    ;;       (print! (warn "%s") (error-message-string e))))))
 
     (when (file-exists-p "~/.emacs")
       (print! (warn "A ~/.emacs file was detected. This conflicts with Doom and should be deleted!")))

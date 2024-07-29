@@ -81,7 +81,7 @@ Respects `diff-hl-disable-on-remote'."
   ;; PERF: Slightly more conservative delay before updating the diff
   (setq diff-hl-flydiff-delay 0.5)  ; default: 0.3
   ;; PERF: don't block Emacs when updating vc gutter
-  (setq diff-hl-update-async t)
+  (setq diff-hl-update-async nil)
 
   ;; UX: get realtime feedback in diffs after staging/unstaging hunks.
   (setq diff-hl-show-staged-changes nil)

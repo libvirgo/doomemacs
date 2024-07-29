@@ -462,7 +462,7 @@ users).")
     ;;   can't predict what the user (or packages) will put into the mode-line.
     ;;   Also, mode-line packages have a bad habit of throwing performance to
     ;;   the wind, so best we just disable the mode-line until we can see one.
-    (put 'mode-line-format 'initial-value (default-toplevel-value 'mode-line-format))
+    ;; (put 'mode-line-format 'initial-value (default-toplevel-value 'mode-line-format))
     (setq-default mode-line-format nil)
     (dolist (buf (buffer-list))
       (with-current-buffer buf (setq mode-line-format nil)))
@@ -518,8 +518,9 @@ users).")
           ;;   optimizations to reduce the scope of potential edge cases.
           (advice-remove #'tool-bar-setup #'ignore)
           (add-transient-hook! 'tool-bar-mode (tool-bar-setup))
-          (unless (default-toplevel-value 'mode-line-format)
-            (setq-default mode-line-format (get 'mode-line-format 'initial-value))))))
+          ;; (unless (default-toplevel-value 'mode-line-format)
+          ;;   (setq-default mode-line-format (get 'mode-line-format 'initial-value)))
+            )))
 
     ;; PERF: Unset a non-trivial list of command line options that aren't
     ;;   relevant to this session, but `command-line-1' still processes.
