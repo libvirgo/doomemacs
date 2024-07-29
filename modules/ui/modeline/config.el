@@ -3,9 +3,14 @@
 (when (modulep! +light)
   (load! "+light"))
 
+(use-package! awesome-tray
+  :when (modulep! +simple)
+  :hook (doom-after-init . awesome-tray-mode)
+  :init
+  (setq awesome-tray-active-modules '("location" "belong" "file-path" "mode-name" "battery" "git")))
 
 (use-package! doom-modeline
-  :unless (modulep! +light)
+  :unless (or (modulep! +light) (modulep! +simple))
   :hook (doom-after-init . doom-modeline-mode)
   :hook (doom-modeline-mode . size-indication-mode) ; filesize in modeline
   :hook (doom-modeline-mode . column-number-mode)   ; cursor column in modeline
