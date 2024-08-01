@@ -116,6 +116,7 @@
 (setq menu-bar-mode nil
       tool-bar-mode nil
       scroll-bar-mode nil)
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; HACK: The menu-bar needs special treatment on MacOS. On Linux and Windows
 ;;   (and TTY frames in MacOS), the menu-bar takes up valuable in-frame real
