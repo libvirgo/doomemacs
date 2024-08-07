@@ -69,25 +69,25 @@
 
 (add-hook! 'doom-first-buffer-hook #'mac-translate-from-yen-to-backslash)
 
-(defvar using-trackpad-timer nil)
-(defvar using-trackpad nil)
+;; (defvar using-trackpad-timer nil)
+;; (defvar using-trackpad nil)
 
-(defun mouse-present-p ()
-  (with-temp-buffer
-    (call-process "ioreg" nil (current-buffer) nil "-p" "IOUSB")
-    (goto-char (point-min))
-    (and (search-forward "USB Receiver" nil t) t)))
+;; (defun mouse-present-p ()
+;;   (with-temp-buffer
+;;     (call-process "ioreg" nil (current-buffer) nil "-p" "IOUSB")
+;;     (goto-char (point-min))
+;;     (and (search-forward "USB Receiver" nil t) t)))
 
-(defun set-using-trackpad ()
-  (setq using-trackpad (not (mouse-present-p))))
+;; (defun set-using-trackpad ()
+;;   (setq using-trackpad (not (mouse-present-p))))
 
-(defun maybe-mouse-wheel-text-scale (event)
-  (interactive (list last-input-event))
-  (when (not using-trackpad)
-    (mouse-wheel-text-scale event)))
+;; (defun maybe-mouse-wheel-text-scale (event)
+;;   (interactive (list last-input-event))
+;;   (when (not using-trackpad)
+;;     (mouse-wheel-text-scale event)))
 
-(when using-trackpad-timer
-  (cancel-timer using-trackpad-timer))
-(setq using-trackpad-timer (run-at-time "0" 60 'set-using-trackpad))
-(global-set-key [(control wheel-up)] 'maybe-mouse-wheel-text-scale)
-(global-set-key [(control wheel-down)] 'maybe-mouse-wheel-text-scale)
+;; (when using-trackpad-timer
+;;   (cancel-timer using-trackpad-timer))
+;; (setq using-trackpad-timer (run-at-time "0" 60 'set-using-trackpad))
+(global-set-key [(control wheel-up)] nil)
+(global-set-key [(control wheel-down)] nil)
