@@ -54,3 +54,5 @@ flycheck_*.el
 /tramp
 /transient/
 /var/
+.projectile
+.project
