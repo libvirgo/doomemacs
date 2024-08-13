@@ -1,7 +1,6 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; ui/modeline/packages.el
 
-<<<<<<< dest:   25da737c3d03 - git: feat(lib): doom-org-docs-mode: bind q to ...
 (unless (or (modulep! +light) (modulep! +simple))
   (package! doom-modeline :pin "9920ef511620e9fa5599cb357e48487f758b1bb1"))
 (when (modulep! +simple)
