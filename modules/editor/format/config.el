@@ -1,10 +1,16 @@
 ;;; editor/format/config.el -*- lexical-binding: t; -*-
 
 (defcustom +format-on-save-disabled-modes
-  '(sql-mode           ; sqlformat is currently broken
-    tex-mode           ; latexindent is broken
-    latex-mode
-    org-msg-edit-mode) ; doesn't need a formatter
+  '(
+     sql-mode           ; sqlformat is currently broken
+     tex-mode           ; latexindent is broken
+     latex-mode
+     typescript-mode
+     typescript-tsx-mode
+     typescript-ts-mode
+     javascript-mode
+     org-msg-edit-mode
+     ) ; doesn't need a formatter
   "A list of major modes in which to not reformat the buffer upon saving.
 
 If it is t, it is disabled in all modes, the same as if the +onsave flag wasn't
