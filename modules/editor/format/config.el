@@ -5,6 +5,7 @@
      sql-mode           ; sqlformat is currently broken
      tex-mode           ; latexindent is broken
      latex-mode
+     LaTeX-mode
      typescript-mode
      typescript-tsx-mode
      typescript-ts-mode
